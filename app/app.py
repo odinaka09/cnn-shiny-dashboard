@@ -85,7 +85,7 @@ class SatelliteCNN(nn.Module):
 
 # Load model and weights
 model = SatelliteCNN().to(device)
-state_dict = torch.load("assets/weights/best_model.pth", map_location=device)
+state_dict = torch.load("model/best_model.pth", map_location=device)
 model.load_state_dict(state_dict)
 model.eval()
 
