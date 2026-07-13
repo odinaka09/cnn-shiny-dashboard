@@ -43,24 +43,20 @@ class SatelliteCNN(nn.Module):
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
             ResidualBlock(32),
-
             nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1), 
             nn.BatchNorm2d(32),
             nn.ReLU(),
             ResidualBlock(32),
-
             nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1), 
             nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
             ResidualBlock(64),
-
             nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(128),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2, stride=2),
             ResidualBlock(128),
-
             nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(128),
             nn.ReLU(),
@@ -83,20 +79,17 @@ class SatelliteCNN(nn.Module):
         x = self.linear_layer(x)
         return x
 
-# Load model and weights
 model = SatelliteCNN().to(device)
 state_dict = torch.load("model/best_model.pth", map_location=device)
-model.load_state_dict(state_dict)
-model.eval()
+_ = model.load_state_dict(state_dict)
+_ = model.eval()
 
-# Image preprocessing
 image_transform = transforms.Compose([
     transforms.Resize((64, 64)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-# App UI
 ui.page_opts(title="Satellite Image Classifier Dashboard", fillable=True)
 
 with ui.sidebar():
@@ -109,6 +102,7 @@ with ui.sidebar():
     )    
     ui.input_action_button("predict_btn", "Run Inference", class_="btn-success w-100")
 
+# THE CORRECT ORDER (As explicitly demanded by the Shiny parser)
 @reactive.calc
 @reactive.event(input.predict_btn)
 def prediction():
@@ -142,7 +136,6 @@ def prediction():
     }
 
 with ui.layout_columns(col_widths=(5, 7)):
-
     with ui.card():
         ui.card_header("Target Image Preview")
 
@@ -171,24 +164,23 @@ with ui.layout_columns(col_widths=(5, 7)):
 
             df = result["df"].copy()
             df["Probability"] = df["Confidence"].apply(lambda p: f"{p:.2f}%")
-            return render.DataGrid(df[["Class", "Probability"]], row_selection_mode="none")
+            return render.DataGrid(df[["Class", "Probability"]], selection_mode="none")
 
 with ui.card():
     ui.card_header("Inference Results")
 
-    with ui.value_box(show_full_screen=True):
-        "Classification Outcome"
-        
-        @render.text
-        def main_prediction_text():
-            result = prediction()
-            if result is None:
-                return "Awaiting Image Ingestion..."
-            return result["top_class"]
-
-        @render.text
-        def sub_prediction_text():
-            result = prediction()
-            if result is None:
-                return "Upload a valid raster dataset from the sidebar to trigger neural model."
-            return f"Model Prediction Confidence: {result['top_conf']:.2f}%"
+    @render.ui
+    def outcome_box():
+        result = prediction()
+        if result is None:
+            return ui.value_box(
+                title="Classification Outcome", 
+                value="Awaiting Image Ingestion...", 
+                showcase="Upload a valid dataset from the sidebar."
+            )
+        return ui.value_box(
+            title="Classification Outcome", 
+            value=result["top_class"], 
+            showcase=f"Model Confidence: {result['top_conf']:.2f}%", 
+            full_screen=True
+        )
