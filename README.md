@@ -22,3 +22,5 @@ This application allows geospatial analysts, operations managers, and environmen
 2. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
+
+   <img width="1920" height="1039" alt="image" src="https://github.com/user-attachments/assets/b6a38581-f4ff-4316-a916-fda6bdb8279c" />
