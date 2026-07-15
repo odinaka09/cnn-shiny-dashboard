@@ -1,6 +1,8 @@
-# 🌍 Satellite Surface Typography Classifier
+# 🌍 Satellite Surface Topography Classifier
 
 An end-to-end deep learning web application that classifies satellite imagery into 10 distinct terrain categories in real-time. 
+
+<img width="1920" height="1039" alt="image" src="https://github.com/user-attachments/assets/b6a38581-f4ff-4316-a916-fda6bdb8279c" />
 
 ## 📊 Business Value & Use Case
 This application allows geospatial analysts, operations managers, and environmental planners to instantly classify land use (e.g., urban development, agricultural zoning, or water resources) without needing to write code or manually process raw satellite data. By decoupling the heavy model training from a lightweight web interface, it provides a scalable, user-friendly tool for rapid spatial decision-making.
@@ -22,5 +24,5 @@ This application allows geospatial analysts, operations managers, and environmen
 2. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
-
-   <img width="1920" height="1039" alt="image" src="https://github.com/user-attachments/assets/b6a38581-f4ff-4316-a916-fda6bdb8279c" />
+Launch the Shiny dashboard:
+   shiny run --reload --launch-browser app/app.py
