@@ -16,7 +16,7 @@ This application allows geospatial analysts, operations managers, and environmen
 ## 📂 Repository Structure
 * `/app` - Contains the `app.py` script for the Shiny web dashboard and inference logic.
 * `/model` - Contains the decoupled PyTorch CNN architecture and the training pipeline scripts.
-* `/assets/plots` - Exploratory Data Analysis (EDA) charts showcasing average pixel and brightness distributions across the dataset.
+* `/plots` - Exploratory Data Analysis (EDA) charts showcasing average pixel and brightness distributions across the dataset.
 
 ## 🚀 How to Run Locally
 
